@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestProgramOptions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestTokenizer.cpp"
 				>
 			</File>
@@ -219,7 +223,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestProgramOptions.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestTokenizer.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="config"
+			>
+			<File
+				RelativePath=".\test-unicode-options.ini"
 				>
 			</File>
 		</Filter>

@@ -5,7 +5,8 @@
 TestChrono::TestChrono()
 {
     //string_to_time();
-    string_to_time_failed();
+    //string_to_time_failed();
+    empty_string_to_time();
 }
 
 
@@ -91,3 +92,32 @@ void TestChrono::string_to_time_failed()
         std::cout << s << std::endl;
     }
 }
+
+
+void TestChrono::empty_string_to_time()
+{
+    {
+        boost::chrono::seconds s;
+        std::istringstream strm( "0 seconds" );
+        strm >> s;
+        std::cout << strm.good() << ", " << strm.fail() << ", " << strm.bad() << std::endl;
+        std::cout << s << std::endl;
+    }
+
+    {
+        boost::chrono::seconds s;
+        std::istringstream strm( "1 seconds" );
+        strm >> s;
+        std::cout << strm.good() << ", " << strm.fail() << ", " << strm.bad() << std::endl;
+        std::cout << s << std::endl;
+    }
+
+    {
+        boost::chrono::seconds s;
+        std::istringstream strm( "xxxxx" );
+        strm >> s;
+        std::cout << strm.good() << ", " << strm.fail() << ", " << strm.bad() << std::endl;
+        std::cout << s << std::endl;
+    }
+}
+
