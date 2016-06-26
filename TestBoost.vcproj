@@ -64,6 +64,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(BOOST_HOME)\stage\lib&quot;"
+				GenerateManifest="true"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -139,6 +140,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(BOOST_HOME)\stage\lib&quot;"
+				GenerateManifest="true"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -181,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestFilesystem.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestProgramOptions.cpp"
 				>
 			</File>
@@ -220,6 +226,10 @@
 			</File>
 			<File
 				RelativePath=".\TestChrono.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestFilesystem.h"
 				>
 			</File>
 			<File
