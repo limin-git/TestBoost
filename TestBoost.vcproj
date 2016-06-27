@@ -187,6 +187,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestTokenizer.cpp"
 				>
 			</File>
@@ -226,6 +230,10 @@
 			</File>
 			<File
 				RelativePath=".\TestFilesystem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestThread.h"
 				>
 			</File>
 			<File
