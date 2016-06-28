@@ -59,6 +59,9 @@ void TestThread::test2()
                 Sleep( 100 );
             }
         }
+
+        bool m_running;
+        boost::thread* m_thread;
     };
 
     Thread t;

@@ -9,7 +9,8 @@ void test_wifstream();
 TestProgramOptions::TestProgramOptions()
 {
     //test_wstringstream();
-    test_wifstream();
+    //test_wifstream();
+    test_duplicate_options();
 }
 
 
@@ -122,4 +123,57 @@ std::wstring TestProgramOptions::wstring_from_file( const wchar_t* file_name, in
     }
 
     return ws;
+}
+
+
+void TestProgramOptions::test_duplicate_options()
+{
+    struct Handler
+    {
+        static void handler( const std::string& s )
+        {
+            std::cout << "Handler: " << s << std::endl;
+        }
+    };
+
+
+    namespace po = boost::program_options;
+
+    po::options_description desc( "Test Duplicate Options" );
+    desc.add_options()
+        //( "foo", po::value<std::string>(), "foo 1" )
+        ( "foo", po::value<std::string>()->notifier( &Handler::handler )->value_name( "value name" ), "foo 2" )
+        //( "foo", po::value<std::string>()->notifier( &Handler::handler ), "foo 3" )
+        ;
+
+
+    //std::ofstream ofs( "test.txt" );
+    //ofs <<  "foo = hwllo,world" << std::endl;
+    //ofs.close();
+
+    //std::ifstream ifs( "test.txt" );
+
+    std::stringstream strm;
+    strm << "foo = hwllo,world \n";
+
+    try
+    {
+        po::variables_map vm;
+        //po::parse_config_file<char>( ifs, desc, true );
+        store( po::parse_config_file<char>( strm, desc ), vm );
+
+        notify( vm );
+
+        if ( vm.count("foo") )
+        {
+            std::cout << vm["foo"].as<std::string>() << std::endl;
+        }
+    }
+    catch ( std::exception& e )
+    {
+        std::cout << "Error: " << e.what() << std::endl;
+    }
+
+    std::cout << desc << std::endl;
+
 }

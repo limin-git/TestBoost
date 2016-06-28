@@ -21,7 +21,7 @@ int _tmain(int argc, _TCHAR* argv[])
         TestTokenizer test;
     }
 
-    if ( 0 )
+    if ( 1 )
     {
         TestProgramOptions test;
     }
@@ -31,7 +31,7 @@ int _tmain(int argc, _TCHAR* argv[])
         TestFilesystem test;
     }
 
-    if ( 1 )
+    if ( 0 )
     {
         TestThread test;
     }
