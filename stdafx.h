@@ -34,6 +34,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/program_options.hpp>
+#include <boost/program_options/detail/utf8_codecvt_facet.hpp>
 #include <boost/signals2.hpp>
 #include <boost/log/sources/logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
