@@ -4,11 +4,8 @@
 #include "stdafx.h"
 #include "TestChrono.h"
 #include "TestTokenizer.h"
-<<<<<<< HEAD
 #include "TestProgramOptions.h"
-=======
 #include "TestFilesystem.h"
->>>>>>> 5fb962d8e55239b61a87932706b75c90d836be6d
 
 
 int _tmain(int argc, _TCHAR* argv[])
