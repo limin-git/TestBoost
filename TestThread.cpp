@@ -24,48 +24,43 @@ void TestThread::foo()
     {
         std::cout << "hello, world" << std::endl;
         //boost::thread::this_thread::sleep_for();
-        Sleep( 100 );        
+        Sleep( 100 );
     }
 }
 
 
 void TestThread::test2()
 {
-    struct Test
+    struct Thread
     {
-        Test( int x_ = 0 )
+        Thread()
         {
-            x = x_;
             m_running = true;
+            m_thread = new boost::thread( boost::ref(*this) );
         }
 
-        bool m_running;
-        int x;
+        ~Thread()
+        {
+            terminate();
+            m_thread->join();
+            delete m_thread;
+        }
+
+        void terminate()
+        {
+            m_running = false;
+        }
+
         void operator()()
         {
             while ( m_running )
             {
-                std::cout << "hello, world " << x++ << std::endl;
+                std::cout << "hello, world "  << std::endl;
                 Sleep( 100 );
             }
         }
-
-        ~Test()
-        {
-            //m_running = false;
-        }
     };
 
-    boost::thread* t = NULL;
-
-    {
-        Test obj;
-        t = new boost::thread( boost::ref(obj) );
-        Sleep(100);
-    }
-
-    std::cout << "Test destroyed" << std::endl;
-    Sleep( 1000 );
-    //t->join();
-    //delete t;
+    Thread t;
+    _getch();
 }

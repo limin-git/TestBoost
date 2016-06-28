@@ -26,7 +26,7 @@ int _tmain(int argc, _TCHAR* argv[])
         TestProgramOptions test;
     }
 
-    if ( 1 )
+    if ( 0 )
     {
         TestFilesystem test;
     }
