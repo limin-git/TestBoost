@@ -6,6 +6,7 @@
 #include "TestTokenizer.h"
 #include "TestProgramOptions.h"
 #include "TestFilesystem.h"
+#include "TestThread.h"
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -25,9 +26,14 @@ int _tmain(int argc, _TCHAR* argv[])
         TestProgramOptions test;
     }
 
-    if ( 1 )
+    if ( 0 )
     {
         TestFilesystem test;
+    }
+
+    if ( 1 )
+    {
+        TestThread test;
     }
 
 	return 0;
