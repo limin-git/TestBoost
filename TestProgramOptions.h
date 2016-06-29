@@ -8,8 +8,12 @@ public:
 
     void test_wstringstream();
     void test_wifstream();
-
-    void test_duplicate_options();
+    void test_notifier();
+    void test_variables_map();
+    void test_multitoken();
+    void test_multitoken_2();
+    void test_positional();
+    void test_positional_2();
 
 public:
 

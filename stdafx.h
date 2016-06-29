@@ -56,3 +56,4 @@
 #include <boost/locale/encoding.hpp>
 #include <boost/any.hpp>
 #include <boost/variant.hpp>
+#include <boost/foreach.hpp>

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TestProgramOptions.h"
 
-
+namespace po = boost::program_options;
 void test_wstringstream();
 void test_wifstream();
 
@@ -10,25 +10,28 @@ TestProgramOptions::TestProgramOptions()
 {
     //test_wstringstream();
     //test_wifstream();
-    test_duplicate_options();
+    //test_notifier();
+    //test_multitoken();
+    //test_multitoken_2();
+    //test_positional();
+    test_positional_2();
 }
 
 
 void TestProgramOptions::test_wstringstream()
 {
-    namespace ps = boost::program_options;
-    ps::options_description desc( "Test Options" );
+    po::options_description desc( "Test Options" );
     
     desc.add_options()
-        ( "foo", ps::wvalue<std::wstring>(), "bar" )
+        ( "foo", po::wvalue<std::wstring>(), "bar" )
         ;
 
-    ps::variables_map vm;
+    po::variables_map vm;
     std::wstringstream strm( wstring_from_file( L"test-unicode-options.ini" ) );
 
     try
     {
-        store( ps::parse_config_file( strm, desc ), vm );
+        store( po::parse_config_file( strm, desc ), vm );
 
         if ( vm.count("foo") )
         {
@@ -46,20 +49,20 @@ void TestProgramOptions::test_wstringstream()
 
 void TestProgramOptions::test_wifstream()
 {
-    namespace ps = boost::program_options;
-    ps::options_description desc( "Test Options" );
+    namespace po = boost::program_options;
+    po::options_description desc( "Test Options" );
 
     desc.add_options()
-        ( "foo", ps::wvalue<std::wstring>(), "bar" )
+        ( "foo", po::wvalue<std::wstring>(), "bar" )
         ;
 
-    ps::variables_map vm;
+    po::variables_map vm;
     std::wifstream wifs( "test-unicode-options.ini" );
     wifs.seekg( 2, std::ios::beg );
 
     try
     {
-        store( ps::parse_config_file( wifs, desc ), vm );
+        store( po::parse_config_file( wifs, desc ), vm );
 
         if ( vm.count("foo") )
         {
@@ -120,13 +123,14 @@ std::wstring TestProgramOptions::wstring_from_file( const wchar_t* file_name, in
         size_t wsize = MultiByteToWideChar( code_page, 0, buf, size, 0, 0 );
         ws.resize( wsize );
         MultiByteToWideChar( code_page, 0, buf, size, &ws[0], wsize );
+        delete[] buf;
     }
 
     return ws;
 }
 
 
-void TestProgramOptions::test_duplicate_options()
+void TestProgramOptions::test_notifier()
 {
     struct Handler
     {
@@ -136,44 +140,197 @@ void TestProgramOptions::test_duplicate_options()
         }
     };
 
-
-    namespace po = boost::program_options;
-
     po::options_description desc( "Test Duplicate Options" );
     desc.add_options()
-        //( "foo", po::value<std::string>(), "foo 1" )
         ( "foo", po::value<std::string>()->notifier( &Handler::handler )->value_name( "value name" ), "foo 2" )
-        //( "foo", po::value<std::string>()->notifier( &Handler::handler ), "foo 3" )
         ;
 
-
-    //std::ofstream ofs( "test.txt" );
-    //ofs <<  "foo = hwllo,world" << std::endl;
-    //ofs.close();
-
-    //std::ifstream ifs( "test.txt" );
-
     std::stringstream strm;
-    strm << "foo = hwllo,world \n";
+    strm << "foo = hwllo, world";
 
     try
     {
         po::variables_map vm;
-        //po::parse_config_file<char>( ifs, desc, true );
         store( po::parse_config_file<char>( strm, desc ), vm );
-
         notify( vm );
-
-        if ( vm.count("foo") )
-        {
-            std::cout << vm["foo"].as<std::string>() << std::endl;
-        }
     }
     catch ( std::exception& e )
     {
         std::cout << "Error: " << e.what() << std::endl;
     }
+}
 
-    std::cout << desc << std::endl;
 
+void TestProgramOptions::test_variables_map()
+{
+    po::variables_map vm1;
+    po::variables_map vm2;
+
+    BOOST_FOREACH( const po::variables_map::value_type& v, vm1 )
+    {
+        vm2.insert( v );
+    }
+}
+
+
+void TestProgramOptions::test_multitoken()
+{
+    char* argv[] = { "place-holder", "--foo", "hello, world", "good, morning" };
+    int argc = sizeof( argv ) / sizeof( char* );
+    po::options_description desc;
+    desc.add_options()
+        ( "foo", po::value< std::vector<std::string> >()->multitoken(), "test" )
+        ;
+    po::variables_map vm;
+
+    try
+    {
+        store( po::parse_command_line<char>( argc, argv, desc ), vm );
+
+        if ( vm.count( "foo" ) )
+        {
+            std::vector<std::string> vs = vm["foo"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+    }
+    catch ( std::exception& e)
+    {
+        std::cout << "error: " << e.what() << std::endl;
+    }
+}
+
+
+void TestProgramOptions::test_multitoken_2()
+{
+    char* argv[] = { "place-holder", "hello, world", "good, morning" };
+    int argc = sizeof( argv ) / sizeof( char* );
+    po::options_description desc;
+    desc.add_options()
+        ( "foo", po::value< std::vector<std::string> >()->multitoken(), "test" )
+        ;
+    po::variables_map vm;
+
+    po::positional_options_description odesc;
+    odesc.add( "foo", -1 );
+
+    try
+    {
+        store( po::command_line_parser( argc, argv ).options( desc ).positional( odesc ).run(), vm );
+
+        if ( vm.count( "foo" ) )
+        {
+            std::vector<std::string> vs = vm["foo"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+    }
+    catch ( std::exception& e)
+    {
+        std::cout << "error: " << e.what() << std::endl;
+    }
+}
+
+
+void TestProgramOptions::test_positional()
+{
+    char* argv[] = { "place-holder", "foo", "bar1", "bar2", "foobar1", "foobar2", "foobar3" };
+    int argc = sizeof( argv ) / sizeof( char* );
+    po::options_description desc;
+    desc.add_options()
+        ( "foo", po::value< std::vector<std::string> >(), "foo" )
+        ( "bar", po::value< std::vector<std::string> >(), "bar" )
+        ( "foobar", po::value< std::vector<std::string> >(), "foobar" )
+        ;
+    po::variables_map vm;
+
+    po::positional_options_description odesc;
+    odesc.add( "foo", 1 ).add( "bar", 2 ).add( "foobar", -1 );
+
+    try
+    {
+        store( po::command_line_parser( argc, argv ).options( desc ).positional( odesc ).run(), vm );
+
+        if ( vm.count( "foo" ) )
+        {
+            std::vector<std::string> vs = vm["foo"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+
+        if ( vm.count( "bar" ) )
+        {
+            std::vector<std::string> vs = vm["bar"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+
+        if ( vm.count( "foobar" ) )
+        {
+            std::vector<std::string> vs = vm["foobar"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+    }
+    catch ( std::exception& e)
+    {
+        std::cout << "error: " << e.what() << std::endl;
+    }
+}
+
+
+
+
+void TestProgramOptions::test_positional_2()
+{
+    char* argv[] = { "place-holder", "foo", "bar1", "--hello=world", "bar2", "foobar1", "foobar2", "--hello", "world2", "foobar3" };
+    int argc = sizeof( argv ) / sizeof( char* );
+    po::options_description desc;
+    desc.add_options()
+        ( "hello", po::value< std::vector<std::string> >(), "hello" )
+        ( "foo", po::value< std::vector<std::string> >(), "foo" )
+        ( "bar", po::value< std::vector<std::string> >(), "bar" )
+        ( "foobar", po::value< std::vector<std::string> >(), "foobar" )
+        ;
+    po::variables_map vm;
+
+    po::positional_options_description odesc;
+    odesc.add( "foo", 1 ).add( "bar", 2 ).add( "foobar", -1 );
+
+    try
+    {
+        store( po::command_line_parser( argc, argv ).options( desc ).positional( odesc ).run(), vm );
+
+        if ( vm.count( "hello" ) )
+        {
+            std::vector<std::string> vs = vm["hello"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+
+        if ( vm.count( "foo" ) )
+        {
+            std::vector<std::string> vs = vm["foo"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+
+        if ( vm.count( "bar" ) )
+        {
+            std::vector<std::string> vs = vm["bar"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+
+        if ( vm.count( "foobar" ) )
+        {
+            std::vector<std::string> vs = vm["foobar"].as< std::vector<std::string> >();
+            std::copy( vs.begin(), vs.end(), std::ostream_iterator<std::string>( std::cout, ", " ) );
+            std::cout << std::endl;
+        }
+    }
+    catch ( std::exception& e)
+    {
+        std::cout << "error: " << e.what() << std::endl;
+    }
 }
