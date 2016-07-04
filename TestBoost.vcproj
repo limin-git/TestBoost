@@ -190,6 +190,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestLexicalCast.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TestLexicalCast.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestProgramOptions.cpp"
 				>
 			</File>
