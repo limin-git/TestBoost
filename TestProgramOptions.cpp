@@ -14,7 +14,8 @@ TestProgramOptions::TestProgramOptions()
     //test_multitoken();
     //test_multitoken_2();
     //test_positional();
-    test_positional_2();
+    //test_positional_2();
+    test_add_same_descriptions();
 }
 
 
@@ -333,4 +334,15 @@ void TestProgramOptions::test_positional_2()
     {
         std::cout << "error: " << e.what() << std::endl;
     }
+}
+
+
+void TestProgramOptions::test_add_same_descriptions()
+{
+    po::options_description desc( "foobar" );
+    desc.add_options()
+        ( "foo", "bar" )
+        ( "foo", "bar" )
+        ;
+    std::cout << desc << std::endl;
 }

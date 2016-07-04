@@ -190,6 +190,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestFstream.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TestFstream.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TestLexicalCast.cpp"
 				>
 			</File>

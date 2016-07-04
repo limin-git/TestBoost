@@ -9,6 +9,7 @@
 #include "TestThread.h"
 #include "TestSemaphore.h"
 #include "TestLexicalCast.h"
+#include "TestFstream.h"
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -43,9 +44,14 @@ int _tmain(int argc, _TCHAR* argv[])
         TestSemaphore test;
     }
 
-    if ( 1 )
+    if ( 0 )
     {
         TestLexicalCast test;
+    }
+
+    if ( 1 )
+    {
+        TestFstream test;
     }
 
 	return 0;

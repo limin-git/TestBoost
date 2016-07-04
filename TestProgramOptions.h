@@ -14,6 +14,7 @@ public:
     void test_multitoken_2();
     void test_positional();
     void test_positional_2();
+    void test_add_same_descriptions();
 
 public:
 
