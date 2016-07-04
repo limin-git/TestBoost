@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -50,6 +50,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="4"
+				DisableSpecificWarnings="4995;4819;4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -93,7 +94,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -119,6 +120,7 @@
 				AdditionalOptions="-Zm1024"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="&quot;$(BOOST_HOME)&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN"
 				RuntimeLibrary="2"
@@ -126,6 +128,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4995;4819;4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -187,11 +190,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestThread.cpp"
+				RelativePath=".\TestProgramOptions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\TestProgramOptions.cpp"
+				RelativePath=".\TestSemaphore.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TestSemaphore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestThread.cpp"
 				>
 			</File>
 			<File
@@ -241,11 +252,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestThread.h"
+				RelativePath=".\TestProgramOptions.h"
 				>
 			</File>
 			<File
-				RelativePath=".\TestProgramOptions.h"
+				RelativePath=".\TestThread.h"
 				>
 			</File>
 			<File

@@ -7,6 +7,7 @@
 #include "TestProgramOptions.h"
 #include "TestFilesystem.h"
 #include "TestThread.h"
+#include "TestSemaphore.h"
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -21,7 +22,7 @@ int _tmain(int argc, _TCHAR* argv[])
         TestTokenizer test;
     }
 
-    if ( 1 )
+    if ( 0 )
     {
         TestProgramOptions test;
     }
@@ -34,6 +35,11 @@ int _tmain(int argc, _TCHAR* argv[])
     if ( 0 )
     {
         TestThread test;
+    }
+
+    if ( 1 )
+    {
+        TestSemaphore test;
     }
 
 	return 0;
