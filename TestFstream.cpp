@@ -4,8 +4,8 @@
 
 TestFstream::TestFstream()
 {
-    test1();
-    //test2();
+    //test1();
+    test2();
 }
 
 
@@ -16,21 +16,53 @@ void TestFstream::test1()
         os << "hello, world!" << std::endl;
     }
 
-    std::fstream fs( "test.txt", std::ios::in | std::ios::out );
+    std::cout << "check file 'test.txt'" << std::endl;
+    _getch();
+
+    std::fstream fs( "test.txt", std::ios::in | std::ios::out | std::ios::app );
     //fs.unsetf( std::ios::skipws );
 
-    std::string s;
-    while ( std::getline( fs, s ) )
+    for( std::string s; std::getline( fs, s ); )
     {
         std::cout << s << std::endl;
     }
 
-    fs.clear();
-    fs.seekp( 0, std::ios::end );
+    std::cout << "print file content" << std::endl;
+    _getch();
 
-    //fs.clear();
+    //fs.seekp( 0, std::ios::end );
+    fs.clear();
     fs << "good, morning" << std::endl;
 
+    std::cout << "write somethin to file 'test.txt'" << std::endl;
+    _getch();
+    
+    fs.close();
+    fs.open( "test.txt", std::ios::out | std::ios::trunc );
+    fs << "abc" << std::endl;
+    fs.close();
+    std::cout << "replace file content with something other" << std::endl;
+}
 
-    //std::cout << s << std::endl;
+
+void TestFstream::test2()
+{
+    if ( 0 )
+    {
+        // empty file
+        std::wofstream os( "test.txt" );
+    }
+
+    std::wfstream fs( "test.txt", std::ios::in | std::ios::out | std::ios::app );
+
+    for( std::wstring s; std::getline( fs, s ); )
+    {
+        std::wcout << s << std::endl;
+    }
+
+    fs.clear();
+    fs << L"hello, world!" << std::endl;
+    fs.close();
+    boost::system::error_code ec;
+    boost::filesystem::remove( "test.txt", ec );
 }
